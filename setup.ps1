@@ -1,5 +1,11 @@
 # Change PYTHON_HOME if needed
-$PYTHON_HOME = "C:\Python27"
+$PYTHON_HOME = "D:\python\Python312"
+#$PYTHON_HOME = "C:\Python27"
+# python 3.x
+$VENV = 'venv'
+# python 2.7
+#$VENV = 'virtualenv'
+
 $VENV_HOME = ".\.venv\"
 $VENV_ACTIVATION_SCRIPT = "$VENV_HOME\Scripts\Activate.ps1"
 Write-Output "*************Look PYTHON in: $PYTHON_HOME"
@@ -18,9 +24,14 @@ trap {
 }
 
 Write-Output "Starting..."
+
+Write-Output "Deleting .venv folder..."
+Remove-Item $VENV_HOME -Recurse -Force
+Write-Output "Deleting .venv folder...DONE"
+
 Write-Output "Calling python to create .venv folder..."
 
-$RESULT = Invoke-Expression $PYTHON_HOME"\python.exe -m virtualenv .venv 2>&1"
+$RESULT = Invoke-Expression $PYTHON_HOME"\python.exe -m $VENV .venv 2>&1"
 
 if ($ISERROR)
 {

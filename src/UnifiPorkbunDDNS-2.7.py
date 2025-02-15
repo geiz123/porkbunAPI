@@ -1,13 +1,15 @@
 #
 # F'in debugger stop working!
 
+#
+# This is for python 2.7 and doesn't require extra modules
+#
+
 # urllib2 post: https://stackoverflow.com/a/4998300/3614460
 import json
 import urllib2
 
 import traceback
-
-import base64
 
 import smtplib
 from email.mime.text import MIMEText
@@ -66,6 +68,7 @@ def doPorkbunDDNSUpdate(
         if response.code == 200:
             responseDict = json.load(response)
             wanIP = responseDict['yourIp']
+            response.close()
 
             if wanIP not in (None, '') and wanIP != domainIP:
                 # Update domain IP
@@ -84,7 +87,7 @@ def doPorkbunDDNSUpdate(
 
                     # Send email notification
                     try:
-                        # sendPostmarkSmtpToken("WAN IP Changed", domainIP + " -> " + wanIP, sender, recipients, postmarkUser, postmarkPass)
+                        sendPostmarkSmtpToken("WAN IP Changed", domainIP + " -> " + wanIP, sender, recipients, postmarkUser, postmarkPass)
                         raise Exception('Test exeception')
                     except Exception as e:
                         print("@@Unable to send Postmark email, stack dump incoming...")
